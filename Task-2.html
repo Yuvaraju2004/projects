@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dark Themed To-Do + Form</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Roboto', sans-serif;
+      background-color: #0e1117;
+      color: #e0e0e0;
+      padding-top: 60px;
+      animation: fadeIn 1s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    header {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      background: #1f2633;
+      padding: 15px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.8);
+      z-index: 999;
+    }
+
+    .logo {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #00ffea;
+      text-shadow: 0 0 5px #00ffea;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: #bbb;
+      margin-left: 20px;
+      font-weight: 500;
+      transition: color 0.3s ease;
+    }
+
+    nav a:hover {
+      color: #00ffea;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 1fr 2.5fr;
+      gap: 40px;
+      max-width: 1100px;
+      margin: 40px auto;
+      padding: 0 20px;
+    }
+
+    .sidebar {
+      background: #1a1e29;
+      padding: 25px;
+      border-radius: 8px;
+    }
+
+    .sidebar h2 {
+      color: #00bfff;
+    }
+
+    .form-container {
+      background: #181c25;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0, 255, 255, 0.1);
+      transition: transform 0.3s;
+    }
+
+    .form-container:hover {
+      transform: scale(1.01);
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    form h3 {
+      margin: 0 auto 20px;
+      font-size: 1.6rem;
+      color: #00ffea;
+      border-bottom: 2px solid #00ffea;
+      padding-bottom: 5px;
+    }
+
+    label {
+      font-weight: 500;
+    }
+
+    input[type="text"],
+    input[type="number"],
+    input[type="email"],
+    input[type="password"],
+    input[type="date"],
+    input[type="file"] {
+      padding: 10px;
+      background-color: #262c3a;
+      border: 1px solid #444;
+      border-radius: 6px;
+      font-size: 1rem;
+      color: #fff;
+      transition: border 0.3s, box-shadow 0.3s;
+    }
+
+    input:focus {
+      border-color: #00ffea;
+      box-shadow: 0 0 5px #00ffea;
+      outline: none;
+    }
+
+    .gender-group {
+      display: flex;
+      gap: 20px;
+    }
+
+    .gender-group label {
+      font-weight: normal;
+    }
+
+    .button {
+      background: #00ffea;
+      color: #000;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 6px;
+      font-size: 1rem;
+      cursor: pointer;
+      box-shadow: 0 0 10px #00ffea;
+      transition: transform 0.2s, box-shadow 0.3s;
+    }
+
+    .button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 15px #00ffea, 0 0 30px #00ffea;
+    }
+
+    .todo-section {
+      max-width: 1100px;
+      margin: 50px auto;
+      background: #181c25;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,255,255,0.1);
+    }
+
+    .todo-section h3 {
+      text-align: center;
+      color: #00ffea;
+      margin-bottom: 25px;
+      border-bottom: 2px solid #00ffea;
+      display: inline-block;
+      padding-bottom: 8px;
+    }
+
+    .todo-input {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .todo-input input {
+      flex: 1;
+      padding: 10px;
+      background: #262c3a;
+      color: #fff;
+      border: 1px solid #444;
+      border-radius: 6px;
+    }
+
+    .todo-input button {
+      background: #00ffea;
+      color: #000;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      box-shadow: 0 0 8px #00ffea;
+      transition: all 0.3s ease;
+    }
+
+    .todo-input button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 15px #00ffea;
+    }
+
+    ul.task-list {
+      list-style: none;
+      padding: 0;
+    }
+
+    ul.task-list li {
+      background: #20252f;
+      padding: 12px 15px;
+      margin-bottom: 10px;
+      border-left: 4px solid #00ffea;
+      border-radius: 6px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      animation: fadeIn 0.5s ease;
+    }
+
+    ul.task-list button {
+      background: #ff4d4d;
+      color: white;
+      border: none;
+      padding: 6px 10px;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    ul.task-list button:hover {
+      background: #ff1a1a;
+    }
+
+    @media (max-width: 768px) {
+      .layout {
+        grid-template-columns: 1fr;
+      }
+
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      nav {
+        margin-top: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="logo">Task-2</div>
+    <nav>
+      <a href="#">Home</a>
+      <a href="#">Features</a>
+      <a href="#">Contact</a>
+    </nav>
+  </header>
+
+  <main class="layout">
+    <aside class="sidebar">
+      <h2>About</h2>
+      <p>This is a stylish dark-mode form & to-do list with animation and interactivity. Built for clean UX.</p>
+    </aside>
+
+    <section class="form-container">
+      <form onsubmit="return handleFormSubmit()">
+        <h3>Register</h3>
+
+        <label for="name">Full Name</label>
+        <input type="text" id="name" required placeholder="Your name" />
+
+        <label for="phone">Phone Number</label>
+        <input type="number" id="phone" required placeholder="10-digit number" />
+
+        <label for="email">Email</label>
+        <input type="email" id="email" placeholder="example@mail.com" />
+
+        <label for="password">Password</label>
+        <input type="password" id="password" required placeholder="Strong password" />
+
+        <label for="dob">Date of Birth</label>
+        <input type="date" id="dob" />
+
+        <label>Gender</label>
+        <div class="gender-group">
+          <label><input type="radio" name="gender" value="male" /> Male</label>
+          <label><input type="radio" name="gender" value="female" /> Female</label>
+          <label><input type="radio" name="gender" value="other" /> Other</label>
+        </div>
+
+        <label for="profile">Upload Profile Picture</label>
+        <input type="file" id="profile" required />
+
+        <input type="submit" class="button" value="Register" />
+      </form>
+    </section>
+  </main>
+
+  <section class="todo-section">
+    <h3>📝 To-Do List</h3>
+    <div class="todo-input">
+      <input type="text" id="taskInput" placeholder="Add a new task..." />
+      <button onclick="addTask()">Add</button>
+    </div>
+    <ul class="task-list" id="taskList"></ul>
+  </section>
+
+  <script>
+    function handleFormSubmit() {
+      const name = document.getElementById("name").value.trim();
+      const phone = document.getElementById("phone").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value.trim();
+      const file = document.getElementById("profile");
+
+      const nameRegex = /^[A-Za-z\s\-]{2,}$/;
+      const phoneRegex = /^[0-9]{10}$/;
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      const passRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@#$%^&+=]).{7,}$/;
+
+      if (!nameRegex.test(name)) {
+        alert("Enter a valid name.");
+        return false;
+      }
+
+      if (!phoneRegex.test(phone)) {
+        alert("Phone must be 10 digits.");
+        return false;
+      }
+
+      if (email && !emailRegex.test(email)) {
+        alert("Invalid email format.");
+        return false;
+      }
+
+      if (!passRegex.test(password)) {
+        alert("Password must contain letters, numbers, symbols (7+ chars).");
+        return false;
+      }
+
+      if (file.required && file.files.length === 0) {
+        alert("Upload a file.");
+        return false;
+      }
+
+      alert("Successfully submitted!");
+      return false; // Prevent real submission
+    }
+
+    function addTask() {
+      const input = document.getElementById("taskInput");
+      const text = input.value.trim();
+
+      if (text === "") {
+        alert("Write something!");
+        return;
+      }
+
+      const li = document.createElement("li");
+      li.textContent = text;
+
+      const delBtn = document.createElement("button");
+      delBtn.textContent = "❌";
+      delBtn.onclick = () => li.remove();
+
+      li.appendChild(delBtn);
+      document.getElementById("taskList").appendChild(li);
+
+      input.value = "";
+      input.focus();
+    }
+
+    document.getElementById("taskInput").addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        addTask();
+      }
+    });
+  </script>
+</body>
+</html>
